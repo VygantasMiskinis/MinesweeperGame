@@ -15,7 +15,8 @@ public class Main{
         while(!gameOver) {
 
             field.printField();
-            System.out.println("x;y;action");
+            System.out.println("Used flags: " + field.getUsedflags() + "/" + field.getmaxBombs());
+            System.out.println("x;y;action ([1-8];[1-10];[reveal/flag])");
             String[] playersTurn = sc.nextLine().split(";");
             try {
                 x=Integer.parseInt(playersTurn[0])-1;

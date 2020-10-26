@@ -4,16 +4,27 @@ import java.util.Random;
 public class MineField {
    private static int sizex=8,sizey=10;
     Tile tilegrid[][] = new Tile[sizex][sizey];
-    int bombCount=0;
+    private int bombCount;
+    private int maxBombs=10;
+    private int usedflags;
     public MineField() {
         bombCount=0;
        generateTileGrid();
+        usedflags=0;
    }
 
    public void reset(){
        bombCount=0;
+       usedflags=0;
        generateTileGrid();
    }
+
+   public int getUsedflags() {return usedflags;}
+
+    public void setMaxBombs(int value) { maxBombs=value;}
+
+    public int getmaxBombs() { return maxBombs; }
+
    public void generateTileGrid()
 
    {
@@ -26,7 +37,7 @@ public class MineField {
 
         }
 
-        while (bombCount<8)
+        while (bombCount<maxBombs)
         {
             int ranx=generateRandomInt(sizex);
             int rany=generateRandomInt(sizey);
@@ -185,6 +196,8 @@ public class MineField {
        {
            case "flag":
                tilegrid[x][y].setFlag();
+               if( tilegrid[x][y].getFlag()) usedflags++;
+               else usedflags--;
                break;
            case "reveal":
 
@@ -244,5 +257,7 @@ public class MineField {
             }
         return true;
         }
+
+
 }
 

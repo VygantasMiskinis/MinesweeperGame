@@ -54,7 +54,10 @@ public class Tile extends JButton {
 
         else
         {
-            if(isBomb==1)
+            if (isFlagged)
+                return "\uD83D\uDEA9";
+
+            else if(isBomb==1)
             {
                 return "☠";
             }
