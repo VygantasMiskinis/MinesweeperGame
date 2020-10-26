@@ -16,8 +16,15 @@ public class Main{
 
             field.printField();
             System.out.println("Used flags: " + field.getUsedflags() + "/" + field.getmaxBombs());
-            System.out.println("x;y;action ([1-8];[1-10];[reveal/flag])");
+            System.out.println("x;y;action ([1-8];[1-10];[reveal/flag])/(exit)");
+
             String[] playersTurn = sc.nextLine().split(";");
+            for(int i=0; i<playersTurn.length;i++){
+                if(playersTurn[i].toLowerCase().equals("exit")){
+                    gameOver=true;
+                    break;
+                }
+            }
             try {
                 x=Integer.parseInt(playersTurn[0])-1;
                 y=Integer.parseInt(playersTurn[1])-1;
