@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MineField {
@@ -12,6 +11,7 @@ public class MineField {
     public void reset() {
         bombCount = 0;
         usedflags = 0;
+        clearGrid();
         generateTileGrid();
     }
 
@@ -27,28 +27,45 @@ public class MineField {
         return maxBombs;
     }
 
-    public void generateTileGrid() {
-        for (int i = 0; i < sizex; i++) {
-            for (int y = 0; y < sizey; y++) {
-                tilegrid[i][y] = new Tile();
-            }
 
-        }
 
+    private void generateTileGrid() {
         while (bombCount < maxBombs) {
             int ranx = generateRandomInt(sizex);
             int rany = generateRandomInt(sizey);
-            if (tilegrid[ranx][rany].getBomb() != 1) {
-                tilegrid[ranx][rany].setBomb();
+            if (tilegrid[ranx][rany]==null) {
+                tilegrid[ranx][rany]= new tileWithBomb();
                 bombCount++;
 
                 System.out.println("Bomb has been planted on " + (ranx+1) + " " + (rany+1));
             }
 
         }
+
+
+        for (int i = 0; i < sizex; i++) {
+            for (int y = 0; y < sizey; y++) {
+                if(calcBombNeighbours(i,y)!=0)
+                    tilegrid[i][y] = new tileWithNumber(calcBombNeighbours(i,y));
+                else if(! (tilegrid[i][y] instanceof tileWithBomb))
+                tilegrid[i][y] = new tileEmpty();
+            }
+        }
+
+
+
+
     }
 
-    public static int generateRandomInt(int a) {
+    private void clearGrid() {
+        for (int i = 0; i < sizex; i++) {
+            for (int y = 0; y < sizey; y++) {
+                tilegrid[i][y] = null;
+            }
+        }
+    }
+
+    private static int generateRandomInt(int a) {
 
         int randomNumber = 0;
 
@@ -64,17 +81,10 @@ public class MineField {
             for (int i = 0; i < sizex; i++) {
                 for (int y = 0; y < sizey; y++) {
 
-                    if (!tilegrid[i][y].getHidden()) {
-                        tilegrid[i][y].setNeighbourBombs(calcBombNeihbours(i, y));
-
-                        if (tilegrid[i][y].getNeighbourBombs() == 0) {
+                    if (!tilegrid[i][y].getHidden() && tilegrid[i][y] instanceof tileEmpty)
                             clearNeighbours(i, y);
-                        }
-                    }
-
 
                 }
-
             }
 
     }
@@ -84,7 +94,7 @@ public class MineField {
 
             for (int y = 0; y < sizey; y++) {
                 if (!tilegrid[i][y].getHidden())
-                    if (tilegrid[i][y].getNeighbourBombs() == 0) {
+                    if (tilegrid[i][y] instanceof tileEmpty) {
                         if (i - 1 >= 0) {
                             if (tilegrid[i - 1][y].getHidden()) return true;
                             if (y - 1 >= 0) if (tilegrid[i - 1][y - 1].getHidden()) return true;
@@ -135,27 +145,27 @@ public class MineField {
 
     }
 
-    public int calcBombNeihbours(int a, int b) {
+    private int calcBombNeighbours(int a, int b) {
         int bombCount = 0;
 
         if (a - 1 >= 0) {
-            bombCount += tilegrid[a - 1][b].getBomb();
-            if (b - 1 >= 0) bombCount += tilegrid[a - 1][b - 1].getBomb();
-            if (b + 1 < sizey) bombCount += tilegrid[a - 1][b + 1].getBomb();
+            bombCount += tilegrid[a - 1][b] instanceof tileWithBomb ? 1 : 0;
+            if (b - 1 >= 0) bombCount += tilegrid[a - 1][b - 1] instanceof tileWithBomb ? 1 : 0;
+            if (b + 1 < sizey) bombCount += tilegrid[a - 1][b + 1] instanceof tileWithBomb ? 1 : 0;
         }
 
         if (b - 1 >= 0) {
-            bombCount += tilegrid[a][b - 1].getBomb();
+            bombCount += tilegrid[a][b - 1] instanceof tileWithBomb ? 1 : 0;
         }
 
         if (b + 1 < sizey) {
-            bombCount += tilegrid[a][b + 1].getBomb();
+            bombCount += tilegrid[a][b + 1] instanceof tileWithBomb ? 1 : 0;
         }
 
         if (a + 1 < sizex) {
-            bombCount += tilegrid[a + 1][b].getBomb();
-            if (b - 1 >= 0) bombCount += tilegrid[a + 1][b - 1].getBomb();
-            if (b + 1 < sizey) bombCount += tilegrid[a + 1][b + 1].getBomb();
+            bombCount += tilegrid[a + 1][b] instanceof tileWithBomb ? 1 : 0;
+            if (b - 1 >= 0) bombCount += tilegrid[a + 1][b - 1] instanceof tileWithBomb ? 1 : 0;
+            if (b + 1 < sizey) bombCount += tilegrid[a + 1][b + 1] instanceof tileWithBomb ? 1 : 0;
         }
 
 
@@ -187,7 +197,7 @@ public class MineField {
                 if(tilegrid[x][y].getFlag()) {
                     tilegrid[x][y].setFlag();
                 }
-                if (tilegrid[x][y].getBomb() == 1) return true;
+                if (tilegrid[x][y] instanceof tileWithBomb) return true;
                 break;
             default:
 
@@ -236,8 +246,8 @@ public class MineField {
 
             for (int y = 0; y < sizey; y++) {
 
-                if (tilegrid[i][y].getBomb() == 1 && !tilegrid[i][y].getFlag() ||
-                        tilegrid[i][y].getBomb() == 0 && tilegrid[i][y].getHidden())
+                if (tilegrid[i][y] instanceof tileWithBomb && !tilegrid[i][y].getFlag() ||
+                        !(tilegrid[i][y] instanceof tileWithBomb) && tilegrid[i][y].getHidden())
                     return false;
 
             }
