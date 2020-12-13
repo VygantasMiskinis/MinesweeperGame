@@ -4,13 +4,14 @@ public class tileEmpty extends Tile {
         super();
     }
 
-    public String draw() {
-        if (isFlagged) {
-            return "F";
-        } else if (isHidden)
-            return "H";
-        else
-            return "E";
+    @Override
+    protected String printTile() {
+        return "E";
+    }
+
+    @Override
+    public void setNeighbourBombs(int bombs) {
+
     }
 }
 

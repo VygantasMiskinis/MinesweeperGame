@@ -1,16 +1,18 @@
 public class tileWithNumber extends Tile {
     private int neighbourBombs=0;
 
-    public tileWithNumber(int i){
+    public tileWithNumber(){
         super();
-        neighbourBombs=i;
     }
-    public String draw() {
-        if (isFlagged) {
-            return "F";
-        } else if (isHidden)
-            return "H";
-        else
-            return String.valueOf(neighbourBombs);
+
+
+    @Override
+    protected String printTile() {
+        return String.valueOf(neighbourBombs);
+    }
+
+    @Override
+    public void setNeighbourBombs(int bombs) {
+        this.neighbourBombs = bombs;
     }
 }

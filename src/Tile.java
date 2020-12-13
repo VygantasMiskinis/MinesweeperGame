@@ -27,5 +27,16 @@ public abstract class Tile {
     }
 
 
-    public abstract String draw();
+    public  String draw(){
+        if (isFlagged) {
+            return "F";
+        } else if (isHidden)
+            return "H";
+        else
+            return printTile();
+    }
+
+    protected abstract String printTile();
+
+    public abstract void setNeighbourBombs(int bombs);
 }

@@ -6,6 +6,7 @@ public class MineField {
     private int bombCount;
     private int maxBombs = 10;
     private int usedflags;
+    private TileFactory factory = new TileFactory();
 
 
     public void reset() {
@@ -34,7 +35,7 @@ public class MineField {
             int ranx = generateRandomInt(sizex);
             int rany = generateRandomInt(sizey);
             if (tilegrid[ranx][rany]==null) {
-                tilegrid[ranx][rany]= new tileWithBomb();
+                tilegrid[ranx][rany]= factory.createTile("bomb");
                 bombCount++;
 
                 System.out.println("Bomb has been planted on " + (ranx+1) + " " + (rany+1));
@@ -45,10 +46,13 @@ public class MineField {
 
         for (int i = 0; i < sizex; i++) {
             for (int y = 0; y < sizey; y++) {
-                if(calcBombNeighbours(i,y)!=0)
-                    tilegrid[i][y] = new tileWithNumber(calcBombNeighbours(i,y));
+                if(calcBombNeighbours(i,y)!=0){
+                    tilegrid[i][y] = factory.createTile("number");
+                    tilegrid[i][y].setNeighbourBombs(calcBombNeighbours(i,y));
+
+                }
                 else if(! (tilegrid[i][y] instanceof tileWithBomb))
-                tilegrid[i][y] = new tileEmpty();
+                tilegrid[i][y] = factory.createTile("empty");
             }
         }
 
