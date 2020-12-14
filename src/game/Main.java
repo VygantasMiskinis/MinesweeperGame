@@ -1,4 +1,5 @@
-import java.awt.*;
+package game;
+
 import java.util.Scanner;
 
 public class Main {

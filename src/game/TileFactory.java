@@ -1,3 +1,5 @@
+package game;
+
 public class TileFactory {
 
     public Tile createTile(String type){

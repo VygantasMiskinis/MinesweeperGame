@@ -1,3 +1,5 @@
+package game;
+
 public class tileWithNumber extends Tile {
     private int neighbourBombs=0;
 

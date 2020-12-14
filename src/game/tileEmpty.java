@@ -1,3 +1,5 @@
+package game;
+
 public class tileEmpty extends Tile {
 
     public tileEmpty() {

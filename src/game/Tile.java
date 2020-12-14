@@ -1,3 +1,5 @@
+package game;
+
 import javax.swing.*;
 
 public abstract class Tile {

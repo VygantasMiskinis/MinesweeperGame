@@ -1,3 +1,5 @@
+package game;
+
 public class tileWithBomb extends Tile {
 
     public tileWithBomb(){

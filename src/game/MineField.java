@@ -1,8 +1,10 @@
+package game;
+
 import java.util.Random;
 
 public class MineField {
     private static int sizex = 8, sizey = 10;
-    Tile tilegrid[][] = new Tile[sizex][sizey];
+    private Tile tilegrid[][] = new Tile[sizex][sizey];
     private int bombCount;
     private int maxBombs = 10;
     private int usedflags;
@@ -26,6 +28,10 @@ public class MineField {
 
     public int getmaxBombs() {
         return maxBombs;
+    }
+
+    public int getBombCount() {
+        return bombCount;
     }
 
 
